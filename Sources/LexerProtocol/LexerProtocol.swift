@@ -12,7 +12,7 @@ public protocol LexerProtocol: TokenStream {
     /// relevant character before it returns.
     typealias GuaranteedTransform = (
         _ buffer: inout Character,
-        _ lexer: inout Self
+        _ lexer: Self
     ) -> Token
     
     /// A token-transform that might produce a token or could fail.
@@ -21,7 +21,7 @@ public protocol LexerProtocol: TokenStream {
     /// relevant character before it returns.
     typealias PossibleTransform = (
         _ buffer: inout Character,
-        _ lexer: inout Self
+        _ lexer: Self
     ) -> Token?
     
     /// The plain text, which will be lexed.
@@ -59,7 +59,7 @@ public extension LexerProtocol {
     /// - Parameter stride: The offset from the current `position` that the
     /// character to be returned is at. The `stride` also affects the amount by
     /// which `position` will be increased.
-    mutating func nextCharacter(peek: Bool = false, stride: Int = 1) -> Character {
+    func nextCharacter(peek: Bool = false, stride: Int = 1) -> Character {
         guard stride >= 1 else {
             fatalError("Lexer Error: \(#function): `stride` must be >= 1.\n")
         }
@@ -85,16 +85,16 @@ public extension LexerProtocol {
     /// 4. If all `tokenTransforms` return `nil` the `defaultTransform`'s return
     /// value is returned.
     /// 5. The pending buffer character is restored by decrementing `position`.
-    mutating func nextToken() -> Token {
+    func nextToken() -> Token {
         var buffer = nextCharacter()
         defer { position -= 1 }
         
         for transform in tokenTransforms {
-            if let token = transform(&buffer, &self) {
+            if let token = transform(&buffer, self) {
                 return token
             }
         }
         
-        return defaultTransform(&buffer, &self)
+        return defaultTransform(&buffer, self)
     }
 }

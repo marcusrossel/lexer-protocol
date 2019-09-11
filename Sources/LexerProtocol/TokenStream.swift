@@ -6,19 +6,19 @@
 //
 
 /// A protocol for types that can generate a sequence of tokens.
-public protocol TokenStream: Sequence, IteratorProtocol {
+public protocol TokenStream: AnyObject, Sequence, IteratorProtocol {
     
     associatedtype Token
     
-    mutating func nextToken() -> Token
+    func nextToken() -> Token
     
     /// Provides a customization point for the sequence-behaviour if needed.
-    mutating func next() -> Token?
+    func next() -> Token?
 }
 
 public extension TokenStream {
     /// The method needed to conform to `IteratorProtocol` and in turn `Sequence`.
-    mutating func next() -> Token? {
+    func next() -> Token? {
         return nextToken()
     }
 }

@@ -36,13 +36,13 @@ final class LexerProtocolTests: XCTestCase {
         var position = 0
         var endOfText: Character = "\0"
         
-        var defaultTransform: (inout Character, inout TestLexer) -> TestToken
-        var tokenTransforms: [(inout Character, inout TestLexer) -> TestToken?] = []
+        var defaultTransform: (inout Character, TestLexer) -> TestToken
+        var tokenTransforms: [(inout Character, TestLexer) -> TestToken?] = []
         
         init(
             text: String = "",
             defaultTransform:
-            @escaping (inout Character, inout TestLexer) -> TestToken
+            @escaping (inout Character, TestLexer) -> TestToken
             ) {
             self.text = text
             self.defaultTransform = defaultTransform

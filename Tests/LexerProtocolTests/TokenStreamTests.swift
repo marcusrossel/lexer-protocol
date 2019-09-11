@@ -10,7 +10,7 @@ final class TokenStreamTests: XCTestCase {
     ]
     
     /// A naïve token-stream structure used for testing purposes.
-    struct TestTokenStream: TokenStream {
+    final class TestTokenStream: TokenStream {
         func nextToken() -> Int {
             return 0
         }
